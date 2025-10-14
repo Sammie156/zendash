@@ -6,18 +6,21 @@ import (
 	"zendash/widgets"
 
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss" // <-- IMPORT lipgloss
 )
 
+// (mainModel and newMainModel remain the same)
 type mainModel struct {
 	clock widgets.ClockModel
 }
 
-func initialModel() mainModel {
+func newMainModel() mainModel {
 	return mainModel{
 		clock: widgets.NewClock(),
 	}
 }
 
+// (Init and Update remain the same)
 func (m mainModel) Init() tea.Cmd {
 	return m.clock.Init()
 }
@@ -40,21 +43,34 @@ func (m mainModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	return m, cmd
 }
 
+// View now uses lipgloss to join widgets together.
 func (m mainModel) View() string {
-	s := "Welcome to ZenDash \n\n"
+	// Get the string output of our clock widget's View() method.
+	clockView := m.clock.View()
 
-	s += m.clock.View() + "\n\n"
+	// An example of a placeholder for a future widget.
+	// We'll replace this later with a real to-do list.
+	placeholder := lipgloss.NewStyle().
+		SetString("Future To-Do Widget").
+		Border(lipgloss.NormalBorder()).
+		Padding(1, 2).
+		Render("...")
 
-	s += "Press q to exit. \n"
+	// Use lipgloss.JoinVertical to stack our widgets.
+	// The first argument is the alignment (0.5 means center).
+	mainView := lipgloss.JoinVertical(
+		lipgloss.Center,
+		clockView,
+		placeholder,
+	)
 
-	return s
+	return mainView
 }
 
 func main() {
-	p := tea.NewProgram(initialModel())
-
+	p := tea.NewProgram(newMainModel())
 	if _, err := p.Run(); err != nil {
-		fmt.Printf("Error : %v", err)
+		fmt.Printf("Alas, there's been an error: %v", err)
 		os.Exit(1)
 	}
 }
