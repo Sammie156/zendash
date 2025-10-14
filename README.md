@@ -1,3 +1,3 @@
 # ZenDash
 
-A CLI Dashboard with widgets 
+A CLI Dashboard with widgets and customizability
