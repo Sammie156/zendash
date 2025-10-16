@@ -11,12 +11,16 @@ import (
 )
 
 type mainModel struct {
-	clock widgets.ClockModel
+	width  int
+	height int
+	clock  widgets.ClockModel
 }
 
-func newMainModel() mainModel {
+func newMainModel(t_width int, t_height int) mainModel {
 	return mainModel{
-		clock: widgets.NewClock(),
+		width:  t_width,
+		height: t_height,
+		clock:  widgets.NewClock(t_width, t_height),
 	}
 }
 
@@ -31,6 +35,7 @@ func (m mainModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.KeyMsg:
 		switch msg.String() {
 		case "ctrl+c", "q":
+			fmt.Println() // This is here so that after quiting, the last line doesn't get cut
 			return m, tea.Quit
 		}
 	}
@@ -51,8 +56,6 @@ func (m mainModel) View() string {
 // TODO: Reformat the code and make it look better
 // TODO: Call the clock widget and append it to the dashboard
 func main() {
-	p := tea.NewProgram(newMainModel())
-
 	fd := int(os.Stdout.Fd())
 
 	// Check if standard input is a terminal
@@ -61,20 +64,22 @@ func main() {
 		return
 	}
 
-	width, _, err := term.GetSize(fd)
+	width, height, err := term.GetSize(fd)
 
 	if err != nil {
 		fmt.Printf("Error getting terminal size %s\n", err)
 		return
 	}
 
+	p := tea.NewProgram(newMainModel(width, height))
+
 	var style = lipgloss.NewStyle().
 		Padding(1).
 		MarginLeft(width/2-15).
 		Bold(true).
 		Foreground(lipgloss.Color("#FAFAFA")).
-		Background(lipgloss.Color("#7D56F4")).
-		Border(lipgloss.NormalBorder(), true, true).
+		Background(lipgloss.AdaptiveColor{Light: "201", Dark: "#75D"}).
+		Border(lipgloss.ASCIIBorder(), true, true).
 		Width(30).
 		Align(lipgloss.Center)
 
