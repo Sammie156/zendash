@@ -1,6 +1,5 @@
 package widgets
 
-// TODO: Recreate the Clock Widget using lipgloss
 import (
 	"fmt"
 	"time"
@@ -44,7 +43,7 @@ func (m ClockModel) Update(msg tea.Msg) (ClockModel, tea.Cmd) {
 }
 
 func (m ClockModel) View() string {
-	title := m.styles.Title.Render("")
+	title := m.styles.Title.Render("CLOCK")
 
 	time_key := m.styles.DetailKey.Render("Current Time:")
 	time_value := m.styles.DetailValue.Render(m.time.Format("15:04:05"))

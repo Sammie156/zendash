@@ -14,6 +14,8 @@ func newStyles(w_title string) styles {
 	return styles{
 		Title: lipgloss.NewStyle().
 			Bold(true).
+			Underline(true).
+			Align(lipgloss.Center).
 			Foreground(lipgloss.Color("202")),
 
 		DetailKey: lipgloss.NewStyle().
@@ -24,7 +26,6 @@ func newStyles(w_title string) styles {
 			Foreground(lipgloss.Color("240")),
 
 		Container: lipgloss.NewStyle().
-			SetString(w_title).
 			Border(lipgloss.ASCIIBorder()).
 			Padding(1, 2),
 	}
