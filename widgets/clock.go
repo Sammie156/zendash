@@ -25,7 +25,7 @@ func tick() tea.Cmd {
 func NewClock(t_width int, t_height int) ClockModel {
 	zoneStr := time.Now().Local().String()[28:]
 
-	return ClockModel{time: time.Now(), zone: zoneStr, styles: newStyles("CLOCK")}
+	return ClockModel{time: time.Now(), zone: zoneStr, styles: newStyles()}
 }
 
 func (m ClockModel) Init() tea.Cmd {

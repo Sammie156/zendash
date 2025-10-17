@@ -10,7 +10,7 @@ type styles struct {
 	Container   lipgloss.Style
 }
 
-func newStyles(w_title string) styles {
+func newStyles() styles {
 	return styles{
 		Title: lipgloss.NewStyle().
 			Bold(true).
